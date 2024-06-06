@@ -4,13 +4,14 @@ import { Authenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import { createTodo } from './graphql/mutations';
 import { generateClient  } from 'aws-amplify/api';
+import { listTodos } from "./graphql/queries";
 
 import awsExports from './aws-exports';
 Amplify.configure(awsExports);
 
-async function storeTodo(){
-  const client = generateClient();
+const client = generateClient();
 
+async function storeTodo(){
   const result = await client.graphql({
     query: createTodo,
     variables: {
@@ -21,6 +22,13 @@ async function storeTodo(){
   })
 }
 
+async function fetchTodos() {
+  const result = await client.graphql({
+    query: listTodos
+  });
+  console.log(result);
+}
+
 const App = () => {
   return (
     <Authenticator>
@@ -29,6 +37,7 @@ const App = () => {
           <h1>Welcome {user.username}</h1>
           <button onClick={signOut}>Sign Out</button>
           <button onClick={storeTodo}>New Todo</button>
+          <button onClick={fetchTodos}>Fetch Todos</button>
         </main>
       )}
     </Authenticator>
