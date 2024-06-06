@@ -4,7 +4,7 @@ import { Authenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import { createTodo } from './graphql/mutations';
 import { generateClient  } from 'aws-amplify/api';
-import { listTodos } from "./graphql/queries";
+import { listTodos, getTodo } from "./graphql/queries";
 
 import awsExports from './aws-exports';
 Amplify.configure(awsExports);
@@ -29,6 +29,15 @@ async function fetchTodos() {
   console.log(result);
 }
 
+async function fetchTodo() {
+  const result = await client.graphql({
+    query: getTodo,
+    variables: { id: "1370123a-af1d-4fb3-b345-991e3b179cd6"}
+  });
+  console.log(result);
+}
+
+
 const App = () => {
   return (
     <Authenticator>
@@ -38,6 +47,7 @@ const App = () => {
           <button onClick={signOut}>Sign Out</button>
           <button onClick={storeTodo}>New Todo</button>
           <button onClick={fetchTodos}>Fetch Todos</button>
+          <button onClick={fetchTodo}>Fetch Todo</button>
         </main>
       )}
     </Authenticator>
