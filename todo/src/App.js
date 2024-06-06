@@ -2,7 +2,7 @@ import React from "react";
 import { Amplify } from 'aws-amplify';
 import { Authenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
-import { createTodo, updateTodo } from './graphql/mutations';
+import { createTodo, updateTodo, deleteTodo } from './graphql/mutations';
 import { generateClient  } from 'aws-amplify/api';
 import { listTodos, getTodo } from "./graphql/queries";
 
@@ -31,7 +31,18 @@ async function changeTodo(){
         name:"updated"
       }
     }
-  })
+  });
+}
+
+async function removeTodo(){
+  const result = await client.graphql({
+    query: deleteTodo,
+    variables: {
+      input: {
+        id: "1370123a-af1d-4fb3-b345-991e3b179cd6"
+      }
+    }
+  });
 }
 
 async function fetchTodos() {
@@ -61,6 +72,7 @@ const App = () => {
           <button onClick={fetchTodos}>Fetch Todos</button>
           <button onClick={fetchTodo}>Fetch Todo</button>
           <button onClick={changeTodo}>Change Todo</button>
+          <button onClick={removeTodo}>Delete Todo</button>
         </main>
       )}
     </Authenticator>
