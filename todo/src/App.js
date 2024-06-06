@@ -2,7 +2,7 @@ import React from "react";
 import { Amplify } from 'aws-amplify';
 import { Authenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
-import { createTodo } from './graphql/mutations';
+import { createTodo, updateTodo } from './graphql/mutations';
 import { generateClient  } from 'aws-amplify/api';
 import { listTodos, getTodo } from "./graphql/queries";
 
@@ -17,6 +17,18 @@ async function storeTodo(){
     variables: {
       input: {
         name:"wash windows"
+      }
+    }
+  })
+}
+
+async function changeTodo(){
+  const result = await client.graphql({
+    query: updateTodo,
+    variables: {
+      input: {
+        id: "1370123a-af1d-4fb3-b345-991e3b179cd6",
+        name:"updated"
       }
     }
   })
@@ -48,6 +60,7 @@ const App = () => {
           <button onClick={storeTodo}>New Todo</button>
           <button onClick={fetchTodos}>Fetch Todos</button>
           <button onClick={fetchTodo}>Fetch Todo</button>
+          <button onClick={changeTodo}>Change Todo</button>
         </main>
       )}
     </Authenticator>
